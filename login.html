@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng nhập - BlogLUA</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #f9fafb; }
+    .auth-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
+    input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; background: #000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <h2 style="text-align: center;">Đăng nhập</h2>
+    <input type="email" id="email" placeholder="Email của bạn">
+    <input type="password" id="pass" placeholder="Mật khẩu">
+    <button id="btn-login">Đăng nhập</button>
+    <p style="text-align: center; margin-top: 20px;">Chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script>
+    // Dán lại Firebase Config của bạn ở đây
+    const firebaseConfig = { /* DÁN CẤU HÌNH CỦA BẠN VÀO ĐÂY */ };
+    firebase.initializeApp(firebaseConfig);
+
+    document.getElementById('btn-login').onclick = () => {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('pass').value;
+      firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then(() => window.location.href = "index.html")
+        .catch(e => alert(e.message));
+    };
+  </script>
+</body>
+</html>
