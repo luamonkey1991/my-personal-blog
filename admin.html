@@ -10,10 +10,12 @@
     <button onclick="window.location.href='index.html'">🏠 Blog</button>
   </nav>
 
-  <div class="container auth-card">
-    <h2>✍️ Viết bài mới</h2>
-    <input type="text" id="post-title" placeholder="Tiêu đề bài viết..." style="width:100%; padding:10px; margin-bottom:10px;">
-    <textarea id="post-content" placeholder="Nội dung tử vi..." style="width:100%; height:200px; padding:10px;"></textarea>
+  <div class="admin-container">
+    <h2 style="color: var(--gold); text-align: center; font-family: var(--font-heading);">✍️ Viết bài mới</h2>
+    
+    <input type="text" id="post-title" placeholder="Tiêu đề bài viết...">
+    <textarea id="post-content" placeholder="Nội dung tử vi..."></textarea>
+    
     <button id="btn-publish">Đăng bài</button>
   </div>
 
@@ -21,20 +23,35 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script>
-    // Cấu hình Firebase (Dán đúng đoạn const firebaseConfig của bạn vào đây)
-    const firebaseConfig = { /* CẤU HÌNH CỦA BẠN */ };
-    firebase.initializeApp(firebaseConfig);
+    // NHỚ DÁN ĐÚNG CẤU HÌNH CỦA BẠN VÀO ĐÂY
+    const firebaseConfig = {
+      apiKey: "AIzaSyAq5o5ub-RvJdgKQqUph7VcawHFry4sF9o",
+      authDomain: "bloglua-9898e.firebaseapp.com",
+      projectId: "bloglua-9898e",
+      storageBucket: "bloglua-9898e.firebasestorage.app",
+      messagingSenderId: "173694829368",
+      appId: "1:173694829368:web:a684f15bd97217b39d77cd"
+    };
+    
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.firestore();
 
     document.getElementById('btn-publish').onclick = () => {
+      const title = document.getElementById('post-title').value;
+      const content = document.getElementById('post-content').value;
+      
+      if(!title || !content) return alert("Vui lòng nhập tiêu đề và nội dung!");
+
       db.collection("posts").add({
-        title: document.getElementById('post-title').value,
-        content: document.getElementById('post-content').value,
+        title: title,
+        content: content,
         date: new Date().toLocaleDateString()
       }).then(() => {
         alert("Đăng bài thành công!");
         window.location.href = "index.html";
-      });
+      }).catch(e => alert("Lỗi: " + e.message));
     };
   </script>
 </body>
