@@ -161,3 +161,23 @@ nav button:hover { background: var(--gold); color: black; }
 #btn-publish:hover {
     background: #b8962e;
 }
+/* Bố cục lưới: Cột chính và Sidebar */
+.main-wrapper {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* Cột chính 3 phần, Sidebar 1 phần */
+    gap: 20px;
+    max-width: 1200px;
+    margin: 100px auto 30px auto;
+    padding: 20px;
+}
+
+/* Sidebar phong cách Tử Vi */
+.sidebar {
+    background: #0d0617;
+    border: 1px solid var(--gold);
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--gold);
+}
+
+.sidebar h3 { font-family: var(--font-heading); border-bottom: 1px solid var(--gold); }
