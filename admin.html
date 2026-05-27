@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Viết bài mới</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <button onclick="window.location.href='index.html'">🏠 Blog</button>
+  </nav>
+
+  <div class="container auth-card">
+    <h2>✍️ Viết bài mới</h2>
+    <input type="text" id="post-title" placeholder="Tiêu đề bài viết..." style="width:100%; padding:10px; margin-bottom:10px;">
+    <textarea id="post-content" placeholder="Nội dung tử vi..." style="width:100%; height:200px; padding:10px;"></textarea>
+    <button id="btn-publish">Đăng bài</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script>
+    // Cấu hình Firebase (Dán đúng đoạn const firebaseConfig của bạn vào đây)
+    const firebaseConfig = { /* CẤU HÌNH CỦA BẠN */ };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.getElementById('btn-publish').onclick = () => {
+      db.collection("posts").add({
+        title: document.getElementById('post-title').value,
+        content: document.getElementById('post-content').value,
+        date: new Date().toLocaleDateString()
+      }).then(() => {
+        alert("Đăng bài thành công!");
+        window.location.href = "index.html";
+      });
+    };
+  </script>
+</body>
+</html>
