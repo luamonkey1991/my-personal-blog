@@ -62,3 +62,18 @@ nav button:hover { background: var(--gold); color: black; }
 }
 
 .sidebar h3 { font-family: var(--font-heading); border-bottom: 1px solid var(--gold); color: var(--gold); }
+#post-content {
+    width: 100%;
+    height: 600px;           /* Chiều cao cố định bạn muốn */
+    padding: 15px;
+    background: #1a1a1a;
+    border: 1px solid var(--gold);
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    
+    /* Các thuộc tính để tạo thanh cuộn */
+    overflow-y: auto;        /* Tự động hiện thanh cuộn khi nội dung vượt quá height */
+    resize: none;            /* Tắt tính năng tự kéo dãn thủ công nếu bạn muốn giữ khung cố định */
+}
