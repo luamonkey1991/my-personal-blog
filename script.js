@@ -18,28 +18,52 @@ function switchTab(tab) {
   document.getElementById('admin-panel').style.display = (tab === 'admin') ? 'block' : 'none';
 }
 
-// 3. Sự kiện
 document.getElementById('btn-home').onclick = () => switchTab('home');
 document.getElementById('btn-admin').onclick = () => switchTab('admin');
 
+// 3. Logic đăng bài
 document.getElementById('btn-publish').onclick = () => {
   db.collection("posts").add({
     title: document.getElementById('post-title').value,
     content: quill.root.innerHTML,
     date: new Date().toLocaleDateString()
-  }).then(() => alert("Đăng thành công!"));
+  }).then(() => {
+    alert("Đăng thành công!");
+    document.getElementById('post-title').value = "";
+    quill.root.innerHTML = "";
+    switchTab('home');
+  });
 };
 
-// 4. Auth
-auth.onAuthStateChanged(user => {
-  document.getElementById('btn-admin').style.display = user ? 'block' : 'none';
-  document.getElementById('btn-login').style.display = user ? 'none' : 'block';
-  document.getElementById('btn-logout').style.display = user ? 'block' : 'none';
-});
+// 4. Logic Auth (Đăng ký, Đăng nhập, Đăng xuất)
+document.getElementById('btn-register').onclick = () => {
+  const email = prompt("Email đăng ký:");
+  const pass = prompt("Mật khẩu:");
+  if (email && pass) auth.createUserWithEmailAndPassword(email, pass)
+    .then(() => alert("Đăng ký thành công!"))
+    .catch(e => alert(e.message));
+};
 
 document.getElementById('btn-login').onclick = () => {
-  const email = prompt("Email:");
+  const email = prompt("Email đăng nhập:");
   const pass = prompt("Mật khẩu:");
-  auth.signInWithEmailAndPassword(email, pass).catch(e => alert(e.message));
+  if (email && pass) auth.signInWithEmailAndPassword(email, pass)
+    .catch(e => alert(e.message));
 };
+
 document.getElementById('btn-logout').onclick = () => auth.signOut();
+
+// 5. Kiểm tra quyền Admin khi trạng thái đăng nhập thay đổi
+auth.onAuthStateChanged(user => {
+  const adminEmail = "email_cua_ban@gmail.com"; // THAY BẰNG EMAIL CỦA BẠN
+  
+  if (user && user.email === adminEmail) {
+    document.getElementById('btn-admin').style.display = 'block';
+  } else {
+    document.getElementById('btn-admin').style.display = 'none';
+  }
+  
+  document.getElementById('btn-login').style.display = user ? 'none' : 'block';
+  document.getElementById('btn-register').style.display = user ? 'none' : 'block';
+  document.getElementById('btn-logout').style.display = user ? 'block' : 'none';
+});
