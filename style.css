@@ -1,15 +1,17 @@
-/* 1. Font chữ cổ điển */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap');
+/* 1. Font chữ hỗ trợ Tiếng Việt tốt (Playfair Display cho tiêu đề, Crimson Text cho nội dung) */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&display=swap');
 
 :root {
     --gold: #d4af37;
     --dark-purple: #1a0b2e;
     --paper: #f4e4bc;
     --text-brown: #4a3728;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Crimson Text', serif;
 }
 
 body { 
-    font-family: 'Crimson Text', serif; 
+    font-family: var(--font-body); 
     background: radial-gradient(circle at center, #2d1b4e, #0a0a0a); 
     color: #e0d0a0; 
     margin: 0; 
@@ -22,14 +24,14 @@ nav {
     background: #0d0617; 
     padding: 15px 50px; 
     display: flex; 
-    align-items: center; /* Thêm dòng này để căn giữa các nút */
+    align-items: center;
     gap: 20px; 
     border-bottom: 3px solid var(--gold);
     position: fixed; 
     top: 0; 
     width: 100%;
     z-index: 100;
-    box-sizing: border-box; /* Quan trọng: để không bị tràn thanh nav */
+    box-sizing: border-box;
 }
 
 nav button { 
@@ -38,13 +40,22 @@ nav button {
     border: 1px solid var(--gold); 
     padding: 8px 16px; 
     cursor: pointer; 
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     transition: 0.3s;
 }
 
 nav button:hover { background: var(--gold); color: black; }
 
-/* 3. Thẻ bài viết (Giấy cổ) */
+/* 3. Nút Thoát (Đẩy sang phải) */
+#btn-logout {
+    margin-left: auto;
+    margin-right: 20px;
+    color: #ff4444;
+    border-color: #ff4444;
+}
+#btn-logout:hover { background: #ff4444; color: white; }
+
+/* 4. Thẻ bài viết (Giấy cổ) */
 .container { max-width: 800px; margin: 30px auto; padding: 20px; }
 
 .post-card { 
@@ -56,16 +67,15 @@ nav button:hover { background: var(--gold); color: black; }
     border: 2px solid #8b7355;
     box-shadow: 0 0 15px rgba(0,0,0,0.5);
     cursor: pointer;
-    position: relative;
 }
 
 .post-card h2 { 
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
     border-bottom: 1px solid #8b7355;
     padding-bottom: 10px;
 }
 
-/* 4. Thẻ Đăng nhập/Đăng ký */
+/* 5. Thẻ Đăng nhập/Đăng ký */
 .auth-card { 
     background: #0d0617; 
     padding: 40px; 
@@ -95,7 +105,7 @@ nav button:hover { background: var(--gold); color: black; }
     border: none; 
     font-weight: bold;
     cursor: pointer;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-heading);
 }
 
 .auth-card a { color: var(--gold); text-decoration: none; }
