@@ -1,233 +1,8 @@
-/* 1. Font chữ hỗ trợ Tiếng Việt tốt (Playfair Display cho tiêu đề, Crimson Text cho nội dung) */
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&display=swap');
-
-:root {
-    --gold: #d4af37;
-    --dark-purple: #1a0b2e;
-    --paper: #f4e4bc;
-    --text-brown: #4a3728;
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Crimson Text', serif;
-}
-
-body { 
-    font-family: var(--font-body); 
-    /* Dòng này gọi file ảnh làm nền */
-    background: url('bg.png') no-repeat center center fixed; 
-    /* Dòng này đảm bảo ảnh luôn phủ kín màn hình */
-    background-size: cover; 
-    color: #e0d0a0; 
-    margin: 0; 
-    padding-top: 80px;
-    min-height: 100vh;
-}
-
-/* 2. Thanh điều hướng huyền bí */
-nav { 
-    background: #0d0617; 
-    padding: 15px 50px; 
-    display: flex; 
-    align-items: center;
-    gap: 20px; 
-    border-bottom: 3px solid var(--gold);
-    position: fixed; 
-    top: 0; 
-    width: 100%;
-    z-index: 100;
-    box-sizing: border-box;
-}
-
-nav button { 
-    background: transparent; 
-    color: var(--gold); 
-    border: 1px solid var(--gold); 
-    padding: 8px 16px; 
-    cursor: pointer; 
-    font-family: var(--font-heading);
-    transition: 0.3s;
-}
-
-nav button:hover { background: var(--gold); color: black; }
-
-/* 3. Nút Thoát (Đẩy sang phải) */
-#btn-logout {
-    margin-left: auto;
-    margin-right: 20px;
-    color: #ff4444;
-    border-color: #ff4444;
-}
-#btn-logout:hover { background: #ff4444; color: white; }
-
-/* 4. Thẻ bài viết (Giấy cổ) */
-.container { max-width: 800px; margin: 30px auto; padding: 20px; }
-
-.post-card { 
-    background: var(--paper); 
-    color: var(--text-brown);
-    padding: 30px; 
-    margin-bottom: 25px; 
-    border-radius: 5px; 
-    border: 2px solid #8b7355;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    cursor: pointer;
-}
-
-.post-card h2 { 
-    font-family: var(--font-heading);
-    border-bottom: 1px solid #8b7355;
-    padding-bottom: 10px;
-}
-
-/* 5. Thẻ Đăng nhập/Đăng ký */
-.auth-card { 
-    background: #0d0617; 
-    padding: 40px; 
-    border-radius: 8px; 
-    border: 1px solid var(--gold);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-    width: 300px; 
-    text-align: center;
-    margin: 100px auto;
-}
-
-.auth-card input { 
-    width: 100%; 
-    padding: 12px; 
-    margin: 10px 0; 
-    background: #1a1a1a;
-    border: 1px solid var(--gold); 
-    color: white;
-    border-radius: 4px;
-}
-
-.auth-card button { 
-    width: 100%; 
-    padding: 12px; 
-    background: var(--gold); 
-    color: black; 
-    border: none; 
-    font-weight: bold;
-    cursor: pointer;
-    font-family: var(--font-heading);
-}
-
-.auth-card a { color: var(--gold); text-decoration: none; }
-/* 6. Mở rộng khung viết bài */
-.admin-container {
-    max-width: 1200px;
-    margin: 100px auto 30px auto; 
-    padding: 20px;
-    background: #0d0617; 
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-}
-
-#post-title {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 20px;
-    background: #1a1a1a;
-    border: 1px solid var(--gold);
-    color: white;
-    font-size: 18px;
-    box-sizing: border-box;
-    font-family: var(--font-body);
-}
-
-#post-content {
-    width: 100%;
-    height: 500px;
-    padding: 15px;
-    background: #1a1a1a;
-    border: 1px solid var(--gold);
-    color: white;
-    font-size: 16px;
-    box-sizing: border-box;
-    font-family: var(--font-body);
-    resize: vertical;
-}
-
-#btn-publish {
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    background: var(--gold);
-    border: none;
-    cursor: pointer;
-    font-family: var(--font-heading);
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.3s;
-}
-
-#btn-publish:hover {
-    background: #b8962e;
-}
-/* Bố cục lưới: Cột chính và Sidebar */
-.main-wrapper {
-    display: grid;
-    grid-template-columns: 3fr 1fr; /* Cột chính 3 phần, Sidebar 1 phần */
-    gap: 20px;
-    max-width: 1200px;
-    margin: 100px auto 30px auto;
-    padding: 20px;
-}
-
-/* Sidebar phong cách Tử Vi */
-.sidebar {
-    background: #0d0617;
-    border: 1px solid var(--gold);
-    padding: 20px;
-    border-radius: 8px;
-    color: var(--gold);
-}
-
-.sidebar h3 { font-family: var(--font-heading); border-bottom: 1px solid var(--gold); }
-/* 1. Giữ nguyên bố cục lưới cho main-wrapper */
-.main-wrapper {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 100px auto 30px auto;
-    padding: 0; /* Bỏ padding ở đây, để vào các khối con */
-}
-
-/* 2. Áp dụng nền và viền cho từng cột con */
-.content, .sidebar {
-    .content {
-    background: rgba(13, 6, 23, 0.6); /* Đen mờ, vẫn thấy ảnh nền bên dưới nhưng chữ dễ đọc hơn */
-    border: none;
-    padding: 30px;
-    min-height: 80vh;
-}
-}
-
-/* 3. Riêng admin-container giữ kiểu cũ cho trang viết bài */
-.admin-container {
-    background: #0d0617;
-    border: 1px solid var(--gold);
-    border-radius: 8px;
-    padding: 30px;
-    min-height: 80vh;
-    margin: 100px auto 30px auto;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-}
-
-/* 4. Reset body chuẩn */
-body {
-    min-height: 100vh;
-    margin: 0;
-    /* Xóa display: flex ở đây nếu không thực sự cần, 
-       vì nó có thể làm vỡ layout fixed của nav */
-}
 /* 1. Font chữ & Root */
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700&display=swap');
 
 :root {
     --gold: #d4af37;
-    --dark-purple: #1a0b2e;
     --paper: #f4e4bc;
     --text-brown: #4a3728;
     --font-heading: 'Playfair Display', serif;
@@ -244,18 +19,14 @@ body {
     min-height: 100vh;
 }
 
-/* 2. Nav & Auth (Giữ nguyên) */
+/* 2. Nav & Auth */
 nav { background: #0d0617; padding: 15px 50px; display: flex; align-items: center; gap: 20px; border-bottom: 3px solid var(--gold); position: fixed; top: 0; width: 100%; z-index: 100; box-sizing: border-box; }
 nav button { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 8px 16px; cursor: pointer; font-family: var(--font-heading); transition: 0.3s; }
 nav button:hover { background: var(--gold); color: black; }
 #btn-logout { margin-left: auto; margin-right: 20px; color: #ff4444; border-color: #ff4444; }
 #btn-logout:hover { background: #ff4444; color: white; }
 
-.auth-card { background: #0d0617; padding: 40px; border-radius: 8px; border: 1px solid var(--gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); width: 300px; text-align: center; margin: 100px auto; }
-.auth-card input { width: 100%; padding: 12px; margin: 10px 0; background: #1a1a1a; border: 1px solid var(--gold); color: white; border-radius: 4px; }
-.auth-card button { width: 100%; padding: 12px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; font-family: var(--font-heading); }
-
-/* 3. Thẻ bài viết & Admin (Giữ nguyên) */
+/* 3. Bài viết & Admin */
 .post-card { background: var(--paper); color: var(--text-brown); padding: 30px; margin-bottom: 25px; border-radius: 5px; border: 2px solid #8b7355; box-shadow: 0 0 15px rgba(0,0,0,0.5); cursor: pointer; }
 .post-card h2 { font-family: var(--font-heading); border-bottom: 1px solid #8b7355; padding-bottom: 10px; }
 
@@ -263,7 +34,7 @@ nav button:hover { background: var(--gold); color: black; }
 #post-title, #post-content { width: 100%; padding: 15px; margin-bottom: 20px; background: #1a1a1a; border: 1px solid var(--gold); color: white; box-sizing: border-box; font-family: var(--font-body); }
 #btn-publish { width: 100%; padding: 15px; background: var(--gold); border: none; cursor: pointer; font-family: var(--font-heading); font-weight: bold; font-size: 18px; }
 
-/* 4. Layout chính (Đã gộp và tối ưu) */
+/* 4. Layout chính (Đã bỏ nền đen của .content) */
 .main-wrapper {
     display: grid;
     grid-template-columns: 3fr 1fr;
@@ -273,13 +44,21 @@ nav button:hover { background: var(--gold); color: black; }
     padding: 0;
 }
 
-.content, .sidebar {
+.content {
+    background: transparent; /* Ô đen đã biến mất */
+    border: none;
+    padding: 30px;
+    min-height: 80vh;
+}
+
+.sidebar {
     background: #0d0617;
     border: 1px solid var(--gold);
     border-radius: 8px;
     padding: 30px;
     min-height: 80vh;
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    color: var(--gold);
 }
 
 .sidebar h3 { font-family: var(--font-heading); border-bottom: 1px solid var(--gold); color: var(--gold); }
