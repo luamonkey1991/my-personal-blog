@@ -1,30 +1,40 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Chi tiết bài viết</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="admin-container">
-    <h1 id="post-title" style="color: var(--gold);"></h1>
-    <p id="post-content" style="color: white;"></p>
-    <button onclick="window.history.back()">⬅️ Quay lại</button>
-  </div>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script>
+<script>
+    // 1. Cấu hình (Phải dán đúng cấu hình của bạn vào đây)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAq5o5ub-RvJdgKQqUph7VcawHFry4sF9o",
+      authDomain: "bloglua-9898e.firebaseapp.com",
+      projectId: "bloglua-9898e",
+      storageBucket: "bloglua-9898e.firebasestorage.app",
+      messagingSenderId: "173694829368",
+      appId: "1:173694829368:web:a684f15bd97217b39d77cd"
+    };
+
+    // 2. Khởi tạo Firebase (Cần chạy trước khi dùng bất kỳ hàm nào của Firebase)
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+
+    // 3. Bây giờ mới khởi tạo Firestore
     const db = firebase.firestore();
+
+    // 4. Lấy dữ liệu
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id');
 
-    db.collection("posts").doc(postId).get().then((doc) => {
-      if (doc.exists) {
-        document.getElementById('post-title').innerText = doc.data().title;
-        document.getElementById('post-content').innerText = doc.data().content;
-      }
-    });
-  </script>
-</body>
-</html>
+    if (postId) {
+        db.collection("posts").doc(postId).get().then((doc) => {
+            if (doc.exists) {
+                document.getElementById('post-title').innerText = doc.data().title;
+                document.getElementById('post-content').innerText = doc.data().content;
+            } else {
+                document.getElementById('post-title').innerText = "Bài viết không tồn tại!";
+            }
+        }).catch(err => {
+            console.error("Lỗi:", err);
+            alert("Lỗi tải bài viết!");
+        });
+    }
+</script>
