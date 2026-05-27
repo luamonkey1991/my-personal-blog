@@ -2,111 +2,120 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Cá Nhân Tích Hợp Soạn Thảo</title>
-  
+  <title>Blog Cá Nhân Firebase</title>
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 0; line-height: 1.6; }
-    header { background-color: #004466; color: white; text-align: center; padding: 20px; }
-    nav { background-color: #0b3c5d; text-align: center; padding: 10px; }
-    nav button { background-color: transparent; color: white; border: 1px solid white; padding: 8px 15px; margin: 0 5px; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
-    nav button:hover, nav button.active { background-color: white; color: #0b3c5d; }
-    .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
-    .post-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; }
-    .post-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-    #post-detail { display: none; background: white; padding: 30px; border-radius: 8px; }
-    .back-btn { background-color: #e0e0e0; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-bottom: 20px; }
-    .post-content img { max-width: 100%; height: auto; }
-    #admin-panel { display: none; background: white; padding: 30px; border-radius: 8px; }
-    input.title-input { width: 100%; padding: 12px; font-size: 18px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    #editor-container { height: 300px; margin-bottom: 20px; }
-    .publish-btn { background-color: #28a745; color: white; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; }
+    /* (Giữ nguyên các style cũ của bạn ở đây) */
+    body { font-family: sans-serif; padding: 20px; }
+    #admin-panel, #post-detail { display: none; }
+    .post-card { border: 1px solid #ccc; padding: 10px; margin: 10px 0; cursor: pointer; }
   </style>
 </head>
 <body>
 
-  <header><h1>Blog Của Tôi</h1></header>
-
   <nav>
-    <button id="btn-home" class="active">🏠 Xem Blog</button>
-    <button id="btn-admin">✍️ Viết Bài Mới</button>
+    <button id="btn-home">🏠 Xem Blog</button>
+    <button id="btn-admin" style="display:none;">✍️ Viết Bài Mới</button>
+    <button id="btn-login">🔑 Đăng nhập Admin</button>
+    <button id="btn-logout" style="display:none;">🚪 Đăng xuất</button>
   </nav>
 
-  <div class="container">
-    <div id="home-view">
-      <div id="post-list"></div>
-      <div id="post-detail">
-        <button class="back-btn" id="btn-back">← Quay lại</button>
-        <h2 id="detail-title"></h2>
-        <div id="detail-date" style="color:#888; margin-bottom:10px;"></div>
-        <div id="detail-content" class="post-content"></div>
-      </div>
-    </div>
-
-    <div id="admin-panel">
-      <h2 style="margin-top:0;">Soạn Thảo Bài Viết Mới</h2>
-      <input type="text" id="post-title" class="title-input" placeholder="Tiêu đề...">
-      <div id="editor-container"></div>
-      <button class="publish-btn" id="btn-publish">Đăng Bài</button>
+  <div id="home-view">
+    <div id="post-list"></div>
+    <div id="post-detail">
+      <button onclick="switchTab('home')">← Quay lại</button>
+      <h2 id="detail-title"></h2>
+      <div id="detail-content"></div>
     </div>
   </div>
 
+  <div id="admin-panel">
+    <input type="text" id="post-title" placeholder="Tiêu đề...">
+    <div id="editor-container" style="height:200px"></div>
+    <button id="btn-publish">Đăng Bài</button>
+  </div>
+
   <script>
-    // 1. Khởi tạo dữ liệu
-    let posts = JSON.parse(localStorage.getItem('myBlogPosts')) || [];
-    var quill = new Quill('#editor-container', { theme: 'snow', modules: { toolbar: [['bold', 'italic'], [{ 'header': 1 }], ['image', 'link']] } });
+    // 1. Cấu hình Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAq5o5ub-RvJdgKQqUph7VcawHFry4sF9o",
+      authDomain: "bloglua-9898e.firebaseapp.com",
+      projectId: "bloglua-9898e",
+      storageBucket: "bloglua-9898e.firebasestorage.app",
+      messagingSenderId: "173694829368",
+      appId: "1:173694829368:web:a684f15bd97217b39d77cd"
+    };
 
-    // 2. Hàm chuyển tab
-    function switchTab(tab) {
-      document.getElementById('home-view').style.display = (tab === 'home') ? 'block' : 'none';
-      document.getElementById('admin-panel').style.display = (tab === 'admin') ? 'block' : 'none';
-      document.getElementById('btn-home').className = (tab === 'home') ? 'active' : '';
-      document.getElementById('btn-admin').className = (tab === 'admin') ? 'active' : '';
-      if(tab === 'home') renderList();
-    }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    var quill = new Quill('#editor-container', { theme: 'snow' });
 
-    // 3. Hàm render danh sách
-    function renderList() {
+    // 2. Lấy dữ liệu từ Cloud Firestore
+    db.collection("posts").onSnapshot(snapshot => {
       const list = document.getElementById('post-list');
-      document.getElementById('post-detail').style.display = 'none';
-      list.style.display = 'block';
-      list.innerHTML = posts.length ? "" : "<p>Chưa có bài viết.</p>";
-      [...posts].reverse().forEach(post => {
+      list.innerHTML = "";
+      snapshot.forEach(doc => {
+        const post = doc.data();
         const card = document.createElement('div');
         card.className = 'post-card';
-        card.innerHTML = `<h2>${post.title}</h2><div class="date">${post.date}</div>`;
-        card.onclick = () => showPost(post.id);
+        card.innerHTML = `<h2>${post.title}</h2>`;
+        card.onclick = () => showPost(doc.id);
         list.appendChild(card);
+      });
+    });
+
+    // 3. Đăng nhập Admin (Email/Pass cố định)
+    document.getElementById('btn-login').onclick = () => {
+      const email = prompt("Email admin:");
+      const pass = prompt("Mật khẩu:");
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => alert("Đăng nhập thành công!"))
+        .catch(err => alert(err.message));
+    };
+
+    auth.onAuthStateChanged(user => {
+      document.getElementById('btn-admin').style.display = user ? 'inline-block' : 'none';
+      document.getElementById('btn-login').style.display = user ? 'none' : 'inline-block';
+      document.getElementById('btn-logout').style.display = user ? 'inline-block' : 'none';
+    });
+
+    // 4. Đăng bài
+    document.getElementById('btn-publish').onclick = () => {
+      db.collection("posts").add({
+        title: document.getElementById('post-title').value,
+        content: quill.root.innerHTML,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("Đăng thành công!");
+        switchTab('home');
+      });
+    };
+
+    function showPost(id) {
+      db.collection("posts").doc(id).get().then(doc => {
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('post-detail').style.display = 'block';
+        document.getElementById('detail-title').innerText = doc.data().title;
+        document.getElementById('detail-content').innerHTML = doc.data().content;
       });
     }
 
-    // 4. Các sự kiện
-    document.getElementById('btn-home').addEventListener('click', () => switchTab('home'));
-    document.getElementById('btn-admin').addEventListener('click', () => switchTab('admin'));
-    document.getElementById('btn-back').addEventListener('click', renderList);
-    document.getElementById('btn-publish').addEventListener('click', () => {
-      const title = document.getElementById('post-title').value;
-      if(!title) return alert("Nhập tiêu đề!");
-      posts.push({ id: Date.now(), title, date: new Date().toLocaleDateString(), content: quill.root.innerHTML });
-      localStorage.setItem('myBlogPosts', JSON.stringify(posts));
-      alert("Đăng bài thành công!");
-      quill.root.innerHTML = "";
-      document.getElementById('post-title').value = "";
-      switchTab('home');
-    });
-
-    function showPost(id) {
-      const post = posts.find(p => p.id === id);
-      document.getElementById('post-list').style.display = 'none';
-      document.getElementById('post-detail').style.display = 'block';
-      document.getElementById('detail-title').innerText = post.title;
-      document.getElementById('detail-content').innerHTML = post.content;
+    function switchTab(tab) {
+      document.getElementById('home-view').style.display = (tab === 'home') ? 'block' : 'none';
+      document.getElementById('admin-panel').style.display = (tab === 'admin') ? 'block' : 'none';
+      document.getElementById('post-detail').style.display = 'none';
     }
-
-    renderList();
+    
+    document.getElementById('btn-home').onclick = () => switchTab('home');
+    document.getElementById('btn-admin').onclick = () => switchTab('admin');
+    document.getElementById('btn-logout').onclick = () => auth.signOut();
   </script>
 </body>
 </html>
