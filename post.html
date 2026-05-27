@@ -2,7 +2,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 <script>
-    // 1. Cấu hình (Phải dán đúng cấu hình của bạn vào đây)
+    // 1. Cấu hình
     const firebaseConfig = {
       apiKey: "AIzaSyAq5o5ub-RvJdgKQqUph7VcawHFry4sF9o",
       authDomain: "bloglua-9898e.firebaseapp.com",
@@ -12,29 +12,35 @@
       appId: "1:173694829368:web:a684f15bd97217b39d77cd"
     };
 
-    // 2. Khởi tạo Firebase (Cần chạy trước khi dùng bất kỳ hàm nào của Firebase)
+    // 2. Khởi tạo Firebase (Chỉ chạy 1 lần)
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
 
-    // 3. Bây giờ mới khởi tạo Firestore
     const db = firebase.firestore();
 
-    // 4. Lấy dữ liệu
+    // 3. Lấy ID từ URL
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id');
 
+    console.log("Đang tải bài với ID:", postId);
+
+    // 4. Lấy dữ liệu bài viết
     if (postId) {
-        db.collection("posts").doc(postId).get().then((doc) => {
-            if (doc.exists) {
-                document.getElementById('post-title').innerText = doc.data().title;
-                document.getElementById('post-content').innerText = doc.data().content;
-            } else {
-                document.getElementById('post-title').innerText = "Bài viết không tồn tại!";
-            }
-        }).catch(err => {
-            console.error("Lỗi:", err);
-            alert("Lỗi tải bài viết!");
-        });
+        db.collection("posts").doc(postId).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    document.getElementById('post-title').innerText = doc.data().title;
+                    document.getElementById('post-content').innerText = doc.data().content;
+                } else {
+                    document.getElementById('post-title').innerText = "Bài viết không tồn tại!";
+                }
+            })
+            .catch((error) => {
+                console.error("Lỗi Firestore:", error);
+                alert("Lỗi tải bài viết: " + error.message);
+            });
+    } else {
+        alert("Không tìm thấy ID bài viết trên URL!");
     }
 </script>
