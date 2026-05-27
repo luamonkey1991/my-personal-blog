@@ -48,14 +48,17 @@ if(document.getElementById('post-list')) {
       const post = doc.data();
       const id = doc.id;
       
-      // Kiểm tra xem người dùng có phải admin không để hiển thị nút xóa
+      // Kiểm tra xem user có phải là Admin không
       const user = auth.currentUser;
       const isAdmin = user && user.email === "vanluait@gmail.com";
+      
+      // Nút xóa chỉ hiện nếu là Admin
       const deleteBtn = isAdmin ? `<button onclick="deletePost('${id}')" style="background:red; color:white; border:none; padding:5px; cursor:pointer;">🗑️ Xóa bài</button>` : '';
 
       list.innerHTML += `
         <div class="post-card">
             <h2>${post.title}</h2>
+            <p>${post.content.substring(0, 100)}...</p>
             <a href="post.html?id=${id}">Đọc tiếp...</a>
             <br><br>
             ${deleteBtn}
