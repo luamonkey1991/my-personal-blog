@@ -17,9 +17,24 @@
     <button id="btn-logout" style="display:none; color:red;" onclick="logout()">🚪 Thoát</button>
   </nav>
 
-  <div class="container">
-    <div id="post-list"></div>
-  </div>
+ <div class="main-wrapper">
+    <div class="content">
+        <div id="post-list">
+            </div>
+    </div>
+
+    <aside class="sidebar">
+        <h3>🌌 Danh mục Tử Vi</h3>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;"><a href="#" style="color: #e0d0a0; text-decoration: none;">✨ Xem lá số trọn đời</a></li>
+            <li style="margin-bottom: 10px;"><a href="#" style="color: #e0d0a0; text-decoration: none;">🧭 Phong thủy nhà ở</a></li>
+            <li style="margin-bottom: 10px;"><a href="#" style="color: #e0d0a0; text-decoration: none;">📜 Gieo quẻ cầu tài</a></li>
+        </ul>
+        
+        <h3 style="margin-top: 30px;">📅 Lịch sự kiện</h3>
+        <p style="font-size: 0.9em; color: #aaa;">Đang cập nhật...</p>
+    </aside>
+</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
