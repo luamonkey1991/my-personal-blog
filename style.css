@@ -184,3 +184,41 @@ nav button:hover { background: var(--gold); color: black; }
 }
 
 .sidebar h3 { font-family: var(--font-heading); border-bottom: 1px solid var(--gold); }
+/* 1. Giữ nguyên bố cục lưới cho main-wrapper */
+.main-wrapper {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 100px auto 30px auto;
+    padding: 0; /* Bỏ padding ở đây, để vào các khối con */
+}
+
+/* 2. Áp dụng nền và viền cho từng cột con */
+.content, .sidebar {
+    background: #0d0617;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 30px;
+    min-height: 80vh;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* 3. Riêng admin-container giữ kiểu cũ cho trang viết bài */
+.admin-container {
+    background: #0d0617;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 30px;
+    min-height: 80vh;
+    margin: 100px auto 30px auto;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* 4. Reset body chuẩn */
+body {
+    min-height: 100vh;
+    margin: 0;
+    /* Xóa display: flex ở đây nếu không thực sự cần, 
+       vì nó có thể làm vỡ layout fixed của nav */
+}
