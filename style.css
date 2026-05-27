@@ -22,12 +22,14 @@ nav {
     background: #0d0617; 
     padding: 15px 50px; 
     display: flex; 
+    align-items: center; /* Thêm dòng này để căn giữa các nút */
     gap: 20px; 
     border-bottom: 3px solid var(--gold);
     position: fixed; 
     top: 0; 
     width: 100%;
     z-index: 100;
+    box-sizing: border-box; /* Quan trọng: để không bị tràn thanh nav */
 }
 
 nav button { 
