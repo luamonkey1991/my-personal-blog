@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết bài viết</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="admin-container">
+    <h1 id="post-title" style="color: var(--gold);"></h1>
+    <p id="post-content" style="color: white;"></p>
+    <button onclick="window.history.back()">⬅️ Quay lại</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script>
+    const db = firebase.firestore();
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+
+    db.collection("posts").doc(postId).get().then((doc) => {
+      if (doc.exists) {
+        document.getElementById('post-title').innerText = doc.data().title;
+        document.getElementById('post-content').innerText = doc.data().content;
+      }
+    });
+  </script>
+</body>
+</html>
