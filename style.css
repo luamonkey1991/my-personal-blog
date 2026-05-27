@@ -196,12 +196,12 @@ nav button:hover { background: var(--gold); color: black; }
 
 /* 2. Áp dụng nền và viền cho từng cột con */
 .content, .sidebar {
-    background: #0d0617;
-    border: 1px solid var(--gold);
-    border-radius: 8px;
+    .content {
+    background: rgba(13, 6, 23, 0.6); /* Đen mờ, vẫn thấy ảnh nền bên dưới nhưng chữ dễ đọc hơn */
+    border: none;
     padding: 30px;
     min-height: 80vh;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
 }
 
 /* 3. Riêng admin-container giữ kiểu cũ cho trang viết bài */
