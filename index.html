@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Của Tôi</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #004466;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    header p {
+      margin: 5px 0 0 0;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    
+    /* Giao diện danh sách bài viết */
+    .post-card {
+      background: white;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .post-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    .post-card h2 {
+      margin-top: 0;
+      color: #0b3c5d;
+      font-size: 22px;
+    }
+    .date {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 15px;
+    }
+    .summary {
+      color: #555;
+    }
+
+    /* Giao diện chi tiết bài viết */
+    #post-detail {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .back-btn {
+      background-color: #e0e0e0;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .back-btn:hover {
+      background-color: #d0d0d0;
+    }
+    .post-content {
+      margin-top: 20px;
+    }
+    .post-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Blog Của Tôi</h1>
+    <p>Nơi chia sẻ kiến thức và câu chuyện hàng ngày</p>
+  </header>
+
+  <div class="container">
+    <div id="post-list"></div>
+
+    <div id="post-detail">
+      <button class="back-btn" onclick="showList()">← Quay lại</button>
+      <h2 id="detail-title" style="color: #004466; font-size: 26px; margin-top: 0;"></h2>
+      <div id="detail-date" class="date"></div>
+      <div id="detail-content" class="post-content"></div>
+    </div>
+  </div>
+
+  <script>
+    // MẢNG CHỨA DỮ LIỆU BÀI VIẾT (Bạn sẽ thêm bài mới vào đây)
+    const posts = [
+      {
+        id: 1,
+        title: "Hướng dẫn Deploy Web lên Vercel",
+        date: "27/05/2026",
+        summary: "Vercel là một nền tảng tuyệt vời để đưa trang web của bạn lên internet hoàn toàn miễn phí. Bài viết này sẽ chia sẻ lại kinh nghiệm của mình...",
+        content: `
+          <p>Chào các bạn, hôm nay mình sẽ chia sẻ cách đưa một trang web HTML lên Vercel cực kỳ đơn giản.</p>
+          <p><b>Bước 1:</b> Tạo tài khoản GitHub và tải code lên đó.</p>
+          <p><b>Bước 2:</b> Đăng nhập Vercel bằng GitHub.</p>
+          <p><b>Bước 3:</b> Chọn Import dự án và bấm Deploy. Mọi thứ chỉ mất 2 phút!</p>
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Lập trình web">
+        `
+      },
+      {
+        id: 2,
+        title: "Câu chuyện tự học lập trình của tôi",
+        date: "25/05/2026",
+        summary: "Bắt đầu từ con số 0, việc học code chưa bao giờ là dễ dàng nhưng nó thực sự xứng đáng...",
+        content: `
+          <p>Hành trình tự học lập trình bắt đầu từ những lúc bỡ ngỡ không biết thẻ <code>&lt;div&gt;</code> là gì.</p>
+          <p>Tuy nhiên, với sự kiên trì mỗi ngày code một chút, mình đã làm được trang web kiểm tra email và bây giờ là chiếc blog này.</p>
+          <p>Bí quyết của mình là: <i>Đừng copy paste mà không hiểu, hãy luôn hỏi tại sao code lại chạy được.</i></p>
+        `
+      }
+    ];
+
+    // CÁC HÀM XỬ LÝ GIAO DIỆN
+    const postListDiv = document.getElementById('post-list');
+    const postDetailDiv = document.getElementById('post-detail');
+
+    // Hàm 1: Hiển thị danh sách bài viết
+    function renderList() {
+      postListDiv.innerHTML = "";
+      posts.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'post-card';
+        card.onclick = () => showPost(post.id);
+        
+        card.innerHTML = `
+          <h2>${post.title}</h2>
+          <div class="date">${post.date}</div>
+          <div class="summary">${post.summary}</div>
+        `;
+        postListDiv.appendChild(card);
+      });
+    }
+
+    // Hàm 2: Hiển thị chi tiết một bài khi click vào
+    function showPost(id) {
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+
+      // Ẩn danh sách, hiện chi tiết
+      postListDiv.style.display = 'none';
+      postDetailDiv.style.display = 'block';
+
+      // Đổ dữ liệu vào
+      document.getElementById('detail-title').innerText = post.title;
+      document.getElementById('detail-date').innerText = post.date;
+      document.getElementById('detail-content').innerHTML = post.content;
+      
+      // Cuộn lên đầu trang
+      window.scrollTo(0, 0);
+    }
+
+    // Hàm 3: Nút quay lại danh sách
+    function showList() {
+      postDetailDiv.style.display = 'none';
+      postListDiv.style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    // Chạy hàm hiển thị danh sách khi vừa load web xong
+    renderList();
+  </script>
+</body>
+</html>
