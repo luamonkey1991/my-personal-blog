@@ -21,7 +21,7 @@ auth.onAuthStateChanged(user => {
   const adminEmail = "vanluait@gmail.com"; 
   const guestNav = document.getElementById('guest-nav');
   const logoutBtn = document.getElementById('btn-logout');
-  const adminNav = document.getElementById('admin-nav');
+  const adminNav = document.getElementById('write-nav');
 
   if (user) {
     if(guestNav) guestNav.style.display = 'none';
