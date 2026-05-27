@@ -28,15 +28,27 @@
     firebase.initializeApp(firebaseConfig);
 
     document.getElementById('btn-register').onclick = () => {
-      const email = document.getElementById('email').value;
-      const pass = document.getElementById('pass').value;
-      firebase.auth().createUserWithEmailAndPassword(email, pass)
-        .then(() => {
-          alert("Đăng ký thành công!");
-          window.location.href = "index.html";
-        })
-        .catch(e => alert(e.message));
-    };
+  const email = document.getElementById('email').value;
+  const pass = document.getElementById('pass').value;
+
+  firebase.auth().createUserWithEmailAndPassword(email, pass)
+    .then(() => {
+      alert("Đăng ký thành công!");
+      window.location.href = "index.html";
+    })
+    .catch(e => {
+      // VIỆT HÓA THÔNG BÁO LỖI Ở ĐÂY
+      if (e.code === 'auth/email-already-in-use') {
+        alert("Email này đã được sử dụng, vui lòng chọn email khác hoặc đăng nhập!");
+      } else if (e.code === 'auth/weak-password') {
+        alert("Mật khẩu quá yếu, vui lòng nhập ít nhất 6 ký tự.");
+      } else if (e.code === 'auth/invalid-email') {
+        alert("Email không hợp lệ.");
+      } else {
+        alert("Lỗi: " + e.message); // Các lỗi khác nếu có
+      }
+    });
+};
   </script>
 </body>
 </html>
