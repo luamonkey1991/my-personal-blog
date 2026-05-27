@@ -12,7 +12,10 @@
 
 body { 
     font-family: var(--font-body); 
-    background: radial-gradient(circle at center, #2d1b4e, #0a0a0a); 
+    /* Dòng này gọi file ảnh làm nền */
+    background: url('bg.png') no-repeat center center fixed; 
+    /* Dòng này đảm bảo ảnh luôn phủ kín màn hình */
+    background-size: cover; 
     color: #e0d0a0; 
     margin: 0; 
     padding-top: 80px;
