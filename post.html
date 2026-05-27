@@ -1,46 +1,56 @@
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết bài viết</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <h1 id="post-title" style="color: var(--gold);">Đang tải...</h1>
+        <div id="post-content" style="color: white; font-size: 18px; line-height: 1.6; white-space: pre-wrap;"></div>
+        
+        <br><br>
+        <button onclick="window.history.back()" style="padding: 10px 20px; cursor: pointer;">⬅️ Quay lại</button>
+    </div>
 
-<script>
-    // 1. Cấu hình
-    const firebaseConfig = {
-      apiKey: "AIzaSyAq5o5ub-RvJdgKQqUph7VcawHFry4sF9o",
-      authDomain: "bloglua-9898e.firebaseapp.com",
-      projectId: "bloglua-9898e",
-      storageBucket: "bloglua-9898e.firebasestorage.app",
-      messagingSenderId: "173694829368",
-      appId: "1:173694829368:web:a684f15bd97217b39d77cd"
-    };
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    // 2. Khởi tạo Firebase (Chỉ chạy 1 lần)
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
+    <script>
+        // Cấu hình
+        const firebaseConfig = {
+            apiKey: "AIzaSyAq5o5ub-RvJdgKQqUph7VcawHFry4sF9o",
+            authDomain: "bloglua-9898e.firebaseapp.com",
+            projectId: "bloglua-9898e",
+            storageBucket: "bloglua-9898e.firebasestorage.app",
+            messagingSenderId: "173694829368",
+            appId: "1:173694829368:web:a684f15bd97217b39d77cd"
+        };
 
-    const db = firebase.firestore();
+        // Khởi tạo
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
 
-    // 3. Lấy ID từ URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('id');
+        // Lấy dữ liệu
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
 
-    console.log("Đang tải bài với ID:", postId);
-
-    // 4. Lấy dữ liệu bài viết
-    if (postId) {
-        db.collection("posts").doc(postId).get()
-            .then((doc) => {
+        if (postId) {
+            db.collection("posts").doc(postId).get().then((doc) => {
                 if (doc.exists) {
                     document.getElementById('post-title').innerText = doc.data().title;
                     document.getElementById('post-content').innerText = doc.data().content;
                 } else {
                     document.getElementById('post-title').innerText = "Bài viết không tồn tại!";
                 }
-            })
-            .catch((error) => {
-                console.error("Lỗi Firestore:", error);
-                alert("Lỗi tải bài viết: " + error.message);
+            }).catch(err => {
+                console.error("Lỗi:", err);
+                alert("Lỗi tải bài viết!");
             });
-    } else {
-        alert("Không tìm thấy ID bài viết trên URL!");
-    }
-</script>
+        }
+    </script>
+</body>
+</html>
